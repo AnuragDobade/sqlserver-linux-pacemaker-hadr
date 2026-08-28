@@ -9,13 +9,19 @@ Choosing the right underlying operating system dictates the financial and operat
 
 ### 📊 TCO & Operational Capability Matrix
 
-| Evaluation Vector | 🟥 Microsoft Windows Server Stack | 🐧 Enterprise Linux (Ubuntu / RHEL) | 🚀 Enterprise Business Advantage |
+### 💵 Financial Cost-Benefit Sizing (Example Stack: 8 vCPU Infrastructure)
+
+The following financial breakdown models a typical production environment spanning a 4-Node topology: DB1 (Primary), DB2 (Synchronous Standby), a Cluster Witness Node, and a Dedicated Backup Server. By dropping the Windows constraint, the OS runtime licensing and recurrent CAL expenses drop to zero.
+
+| Infrastructure Sizing & Assets | 🖥️ Hardware Compute Cost (Fixed) | 🟥 Windows Server Deployment Stack | 🐧 Linux Deployment Stack (Ubuntu/RHEL) |
 | :--- | :--- | :--- | :--- |
-| **OS Runtime Licensing** | 💰 **Premium Core Pooling Model**<br>Requires costly Standard/Datacenter per-core retail licensing packs. | 🟢 **\$0 Base Open-Source Cost**<br>Eliminates operating system licensing fees entirely across all cluster nodes. | **Massive CAPEX Reduction:** Reduces basic infrastructure operating expense by 100% at the OS layer. |
-| **Access Licensing (CALs)** | 🔒 **Mandatory per User/Device**<br>Requires complex tracking of Client Access Licenses for application connections. | ✨ **Completely Eliminated**<br>No per-user or per-device licensing constraints inherent to the OS. | **Uncapped Scaling:** Scales database access across infinite microservices with zero license expansion penalties. |
-| **Cluster Architecture Engine** | ⚙️ **Windows Server Failover Cluster**<br>Heavily coupled with Active Directory (AD) and local domain controller health. | 🛠️ **Pacemaker & Corosync**<br>Decoupled, high-speed open-source clustering stack with zero AD dependencies. | **Failure Domain Isolation:** Keeps database clustering fully operational even during corporate network/AD drops. |
-| **Split-Brain Mitigation** | 💿 **Software Lease / Witness Quorum**<br>Relies on shared cloud/disk witness storage heartbeats that can lag during path drops. | ⚡ **Hardware Fencing (STONITH)**<br>Employs robust, cloud-native **AWS STONITH API fencing** and specialized QDevice quorum layers. | **Absolute Data Protection:** Instantly isolates malfunctioning partition nodes to guarantee 0% data corruption risk. |
-| **Compute Node Efficiency** | 🖥️ **Dense GUI Subsystem Overhead**<br>Consumes valuable host server background system memory and CPU cycles. | 💻 **Minimal Headless CLI Footprint**<br>Runs lean background execution lines, leaving maximum hardware space for data processing. | **Hardware Optimization:** Reclaims significant memory overhead per host, optimizing cloud VM computing costs. |
-| **Uptime & SLA Delivery** | 🕒 Standard OS patching often forces full system node reboots, resulting in cluster failover disruptions. | 🎯 **99.99% Continuous Availability**<br>Supports rapid, rolling zero-downtime Cumulative Updates (CU) via native command utilities. | **Bulletproof Continuity:** Maximizes application service continuity across rolling infrastructure lifecycles. |
+| **DB1 (Primary Node)**<br>8 vCPU / 64GB RAM / 1TB SSD | `$2,978.88` | `$2,978.88` + OS License Premium | **`$2,978.88`** + 🟢 `$0` OS License |
+| **DB2 (Standby Node)**<br>8 vCPU / 64GB RAM / 1TB SSD | `$2,978.88` | `$2,978.88` + OS License Premium | **`$2,978.88`** + 🟢 `$0` OS License |
+| **DB-Cluster (Witness Node)**<br>4 vCPU / 8GB RAM / 100GB Disk | `$669.15` | `$669.15` + OS License Premium | **`$669.15`** + 🟢 `$0` OS License |
+| **Dedicated Backup Server**<br>4 vCPU / 8GB RAM / 1TB Storage | `$1,040.40` | `$1,040.40` + OS License Premium | **`$1,040.40`** + 🟢 `$0` OS License |
+| **SQL Server Licensing**<br>8 vCPU Mandatory Baseline | — | `$15,000` to `$60,000` (Recurring Core Fees) | **Identical Engine Licensing Match** |
+| **Windows Server CALs Overhead** | — | ❌ **High Variable Cost** (Per User/Device) | 🟢 **`$0.00` Completely Eliminated** |
+| **Underlying Operating System Fee** | — | ❌ **Datacenter/Standard Core License** | 🟢 **`$0.00` (100% Free Open-Source OS)** |
+| **💸 SUMMARY TOTAL OVERHEAD** | Baseline VM Compute Run | ⚠️ **Hardware Run + Heavy OS Premium Fees** | 🎯 **Raw Hardware Compute Run Only** |
 
 ---
