@@ -56,7 +56,7 @@ The matrix below maps out your architecture across an 18-vCPU enterprise topolog
 
 ---
 
-## 💰 Taking SQL Server SA Benefit Subscription Models [ DB1 is Primary, DB2 is DR readable only when becomes primary]
+## 💰 Taking SQL Server SA Benefit Subscription Models [ DB1 is Primary, DB2 is DR: Accessible only when becomes primary]
 
 The matrix below maps out your architecture across an 18-vCPU enterprise topology spanning: `db1` (Primary Replica), `db2` (Secondary HA Replica non readable), a dedicated `db-cluster` (Quorum Witness Node), and a standalone cloud `Backup Server`.
 
