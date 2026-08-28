@@ -4,7 +4,7 @@ In standard Windows-based deployments, an Availability Group relies heavily on a
 
 This standalone architectural blueprint maps a highly efficient, lightweight **Clusterless Always On Configuration (`CLUSTER_TYPE = NONE`)** running over decoupled enterprise nodes. This deployment eliminates external listener infrastructure overheads to scale synchronous workloads at minimal operating costs.
 
-![Clusterless SQL Server AlwaysOn Architecture On RHEL 9](./architecture_clusterless_rhel.png)
+![Clusterless SQL Server AlwaysOn Architecture On RHEL 9](./Architecture_Basic_ALways_On_SQL_Redhat.png)
 
 ### ⚙️ Core Topology Specifications:
 * **Primary Replica (`SQL DB1`):** Hosted on **Red Hat Enterprise Linux 9.8** | Provisioned with 2 vCPUs and 8 GB RAM. Dedicated IP: `10.1.0.5`.
