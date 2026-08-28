@@ -34,7 +34,7 @@ The following cost-benefit matrix is built directly from production benchmarks o
 
 ---
 
-## 💰 Breaking Down SQL Server Subscription Models [ DB1 is Primary, DB2 is Readonly for Reporting Workloads]
+## 💰 Comparisons between SQL Server Subscription Models [ Perpetual, PayG, CapEX] [ DB1 is Primary, DB2 is Readonly for Reporting Workloads]
 
 The matrix below maps out your architecture across an 18-vCPU enterprise topology spanning: `db1` (Primary Replica), `db2` (**Active Readable Secondary**), a dedicated `db-cluster` (Quorum Witness Node), and a standalone cloud `Backup Server`.
 
@@ -56,7 +56,7 @@ The matrix below maps out your architecture across an 18-vCPU enterprise topolog
 
 ---
 
-## 💰 Breaking Down SQL Server Subscription Models [ DB1 is Primary, DB2 is DR readable only when becomes primary]
+## 💰 Taking SQL Server SA Benefit Subscription Models [ DB1 is Primary, DB2 is DR readable only when becomes primary]
 
 The matrix below maps out your architecture across an 18-vCPU enterprise topology spanning: `db1` (Primary Replica), `db2` (Secondary HA Replica non readable), a dedicated `db-cluster` (Quorum Witness Node), and a standalone cloud `Backup Server`.
 
