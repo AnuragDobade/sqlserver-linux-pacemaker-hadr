@@ -1,5 +1,10 @@
 ## 🗺️ 1. Architecture & Topography Blueprint
 
+Hostname	IP Address	Role	SQL Server Edition	OS Version
+rh-staging1	10.1.0.5	Primary Node	Enterprise Developer 2025	RHEL 9.8
+rh-staging2	10.1.0.6	Secondary Node	Enterprise Developer 2025	RHEL 9.8
+
+
 In standard Windows-based deployments, an Availability Group relies heavily on active listeners and standard network load balancers (NLBs) to manage traffic transitions. 
 
 This standalone architectural blueprint maps a highly efficient, lightweight **Clusterless Always On Configuration (`CLUSTER_TYPE = NONE`)** running over decoupled enterprise nodes. This deployment eliminates external listener infrastructure overheads to scale synchronous workloads at minimal operating costs.
