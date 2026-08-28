@@ -3,25 +3,27 @@ Production-grade multi-node, multi-site SQL Server Always On Availability Groups
 
 ---
 
-## ⚖️ Strategic Architecture: Windows Server vs. Enterprise Linux
+## 💰 Detailed Financial Sizing: Azure VM & Multi-OS Pricing Matrix
 
-Choosing the right underlying operating system dictates the financial and operational scalability of enterprise database infrastructure. By transitioning mission-critical workloads to open-source or enterprise Linux frameworks, organizations completely bypass standard platform overhead while establishing a more resilient high-availability layer.
+The following cost-benefit matrix is built directly from production benchmarks on Microsoft Azure. It breaks down an 18-vCPU topology consisting of a High-Availability pair (`db1` and `db2`), a dedicated cluster quorum witness node (`db-cluster`), and an enterprise `Backup Server`. 
 
-### 📊 TCO & Operational Capability Matrix
+By migrating the underlying runtime layer from Windows Server Datacenter to Open-Source Linux (Ubuntu LTS / RHEL), the operating system licensing fee drops to **exactly $0.00**, delivering significant cost reductions without sacrificing database performance.
 
-### 💵 Financial Cost-Benefit Sizing (Example Stack: 8 vCPU Infrastructure)
+### 📊 Monthly & Annual TCO Breakdown (Azure Sizing Metrics)
 
-The following financial breakdown models a typical production environment spanning a 4-Node topology: DB1 (Primary), DB2 (Synchronous Standby), a Cluster Witness Node, and a Dedicated Backup Server. By dropping the Windows constraint, the OS runtime licensing and recurrent CAL expenses drop to zero.
+| Component Host / Name | System Hardware Specs | Monthly Compute Hardware | Monthly SQL License | 🟥 Monthly Windows OS Fee | 🐧 Monthly Linux OS Fee | 🟢 Net Capital Saved (Linux) |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **db1** <br>*(Primary Replica)* | 8 vCPU / 64 GB RAM <br>32 GB OS / 1000 GB Data | `$472.92`<br>*(Yearly: $5,675.04)* | `$2,190.00`<br>*(Yearly: $26,280.00)* | `$268.64`<br>*(Yearly: $3,223.68)* | **`$0.00`** | **`$268.64 / mo`**<br>*(Yearly: $3,223.68)* |
+| **db2** <br>*(Secondary Replica)* | 8 vCPU / 64 GB RAM <br>32 GB OS / 1000 GB Data | `$472.92`<br>*(Yearly: $5,675.04)* | `$2,190.00`<br>*(Yearly: $26,280.00)* | `$268.64`<br>*(Yearly: $3,223.68)* | **`$0.00`** | **`$268.64 / mo`**<br>*(Yearly: $3,223.68)* |
+| **db-cluster** <br>*(Quorum Witness)* | 2 vCPU / 8 GB RAM <br>32 GB OS / 128 GB Data | `$89.28`<br>*(Yearly: $1,071.36)* | `$0.00`<br>*(Yearly: $0.00)* | `$67.16`<br>*(Yearly: $805.92)* | **`$0.00`** | **`$67.16 / mo`**<br>*(Yearly: $805.92)* |
+| **Backup Server** <br>*(Cloud Storage Node)* | 2 vCPU / 8 GB RAM <br>32 GB OS / 500 GB Data | `$124.28`<br>*(Yearly: $1,491.36)* | `$0.00`<br>*(Yearly: $0.00)* | `$67.16`<br>*(Yearly: $805.92)* | **`$0.00`** | **`$67.16 / mo`**<br>*(Yearly: $805.92)* |
+| **📈 TOTALS** | **18 vCPU / 136 GB RAM** <br>**2,128 GB Disk Pool** | **`$1,159.40 / mo`**<br>*(Yearly: $13,912.80)* | **`$4,380.00 / mo`**<br>*(Yearly: $52,560.00)* | **`$671.60 / mo`**<br>*(Yearly: $8,059.20)* | **`$0.00 / mo`** | **`$671.60 / month`**<br>⚠️ **`$8,059.20 / year`** |
 
-| Infrastructure Sizing & Assets | 🖥️ Hardware Compute Cost (Fixed) | 🟥 Windows Server Deployment Stack | 🐧 Linux Deployment Stack (Ubuntu/RHEL) |
-| :--- | :--- | :--- | :--- |
-| **DB1 (Primary Node)**<br>8 vCPU / 64GB RAM / 1TB SSD | `$2,978.88` | `$2,978.88` + OS License Premium | **`$2,978.88`** + 🟢 `$0` OS License |
-| **DB2 (Standby Node)**<br>8 vCPU / 64GB RAM / 1TB SSD | `$2,978.88` | `$2,978.88` + OS License Premium | **`$2,978.88`** + 🟢 `$0` OS License |
-| **DB-Cluster (Witness Node)**<br>4 vCPU / 8GB RAM / 100GB Disk | `$669.15` | `$669.15` + OS License Premium | **`$669.15`** + 🟢 `$0` OS License |
-| **Dedicated Backup Server**<br>4 vCPU / 8GB RAM / 1TB Storage | `$1,040.40` | `$1,040.40` + OS License Premium | **`$1,040.40`** + 🟢 `$0` OS License |
-| **SQL Server Licensing**<br>8 vCPU Mandatory Baseline | — | `$15,000` to `$60,000` (Recurring Core Fees) | **Identical Engine Licensing Match** |
-| **Windows Server CALs Overhead** | — | ❌ **High Variable Cost** (Per User/Device) | 🟢 **`$0.00` Completely Eliminated** |
-| **Underlying Operating System Fee** | — | ❌ **Datacenter/Standard Core License** | 🟢 **`$0.00` (100% Free Open-Source OS)** |
-| **💸 SUMMARY TOTAL OVERHEAD** | Baseline VM Compute Run | ⚠️ **Hardware Run + Heavy OS Premium Fees** | 🎯 **Raw Hardware Compute Run Only** |
+### 🎯 Key Financial Takeaways
+
+* **Windows Total Deployment Cost:** **`$6,211.00 / mo`** (`$74,532.00 / year`)
+* **Linux Total Deployment Cost:** **`$5,539.40 / mo`** (`$66,472.80 / year`)
+* **Financial Bottom Line:** Switching to your high-availability Linux clustering environment keeps the underlying cloud hardware compute profile identical while recovering exactly **$8,059.20 per year in pure operating system savings** for every cluster layer deployed!
 
 ---
+
