@@ -27,13 +27,34 @@ By migrating the underlying runtime layer from Windows Server Datacenter to Open
 
 ---
 
+
 ---
 
-## 💰 Multi-Model Financial Audit: Azure VM & SQL Server Licensing
+## 💰 Breaking Down SQL Server Subscription Models [ DB1 is Primary, DB2 is Readonly for Reporting Workloads]
 
-The matrix below maps out your architecture across an 18-vCPU enterprise topology spanning: `db1` (Primary Replica), `db2` (Secondary HA Replica), a dedicated `db-cluster` (Quorum Witness Node), and a standalone cloud `Backup Server`.
+The matrix below maps out your architecture across an 18-vCPU enterprise topology spanning: `db1` (Primary Replica), `db2` (**Active Readable Secondary**), a dedicated `db-cluster` (Quorum Witness Node), and a standalone cloud `Backup Server`.
 
-By shifting the underlying runtime environment from Windows Server Datacenter to Open-Source Linux (Ubuntu LTS / RHEL), the operating system licensing fee drops to **exactly $0.00**. This table scales out your database engine options across all three commercial licensing tracks offered by Microsoft.
+> ⚠️ **Critical Licensing Compliance Note:** Under official Microsoft licensing policies, a secondary node is only free if it is completely passive. Because this architecture configures `db2` as an **Active Readable Secondary** to offload reporting and read-heavy workloads, **both nodes must be fully licensed** for SQL Server. This configuration makes the underlying Linux OS cost optimization even more critical to prevent overall infrastructure budget bloat.
+
+### 📊 Comprehensive Sizing, Platform, & Database Matrix
+
+| Component Node Name | VM Hardware Specs | Monthly Hardware Compute | 🟥 Monthly Windows OS Fee | 🐧 Monthly Linux OS Fee | 🏛️ Model 1: Upfront (Perpetual + SA)<br>Year 1 Capital / Year 2+ SA | ⚡ Model 2: Pay-As-You-Go<br>(Azure Arc Engine PAYG) | 📦 Model 3: Subscription<br>(Annual OPEX Model) |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **db1** <br>*(Primary Engine)* | 8 vCPU / 64 GB RAM <br>1000 GB NVMe Pool | `$472.92`<br>*(Yearly: $5,675.04)* | `$268.64`<br>*(Yearly: $3,223.68)* | **`$0.00`** | **Year 1:** `$60,492.00` <br>**Year 2+:** `$15,123.00/yr` | `$2,190.00 / mo`<br>*(Yearly: $26,280.00)* | `$21,736.00 / yr`<br>*(Equivalent: $1,811.33/mo)* |
+| **db2** <br>*(Active Readable Secondary)* | 8 vCPU / 64 GB RAM <br>1000 GB NVMe Pool | `$472.92`<br>*(Yearly: $5,675.04)* | `$268.64`<br>*(Yearly: $3,223.68)* | **`$0.00`** | **Year 1:** `$60,492.00` <br>**Year 2+:** `$15,123.00/yr` | `$2,190.00 / mo`<br>*(Yearly: $26,280.00)* | `$21,736.00 / yr`<br>*(Equivalent: $1,811.33/mo)* |
+| **db-cluster** <br>*(Quorum Witness)* | 2 vCPU / 8 GB RAM <br>128 GB Storage | `$89.28`<br>*(Yearly: $1,071.36)* | `$67.16`<br>*(Yearly: $805.92)* | **`$0.00`** | 🟢 **`$0.00`** <br>*(No SQL Engine Active)* | 🟢 **`$0.00`** <br>*(No SQL Engine Active)* | 🟢 **`$0.00`** <br>*(No SQL Engine Active)* |
+| **Backup Server** <br>*(Cloud Storage)* | 2 vCPU / 8 GB RAM <br>500 GB Storage | `$124.28`<br>*(Yearly: $1,491.36)* | `$67.16`<br>*(Yearly: $805.92)* | **`$0.00`** | 🟢 **`$0.00`** <br>*(No SQL Engine Active)* | 🟢 **`$0.00`** <br>*(No SQL Engine Active)* | 🟢 **`$0.00`** <br>*(No SQL Engine Active)* |
+| **📈 TOTALS** | **18 vCPU / 136 GB RAM** <br>**2,128 GB Disk Pool** | **`$1,159.40 / mo`**<br>*(Yearly: $13,912.80)* | **`$671.60 / mo`**<br>*(Yearly: $8,059.20)* | **`$0.00 / mo`** | **Year 1:** `$120,984.00` <br>**Year 2+:** `$30,246.00/yr` | **`$4,380.00 / mo`** <br>*(Yearly: $52,560.00)* | **`$43,472.00 / yr`** <br>*(Yearly Engine Run)* |
+
+
+---
+
+
+---
+
+## 💰 Breaking Down SQL Server Subscription Models [ DB1 is Primary, DB2 is DR readable only when becomes primary]
+
+The matrix below maps out your architecture across an 18-vCPU enterprise topology spanning: `db1` (Primary Replica), `db2` (Secondary HA Replica non readable), a dedicated `db-cluster` (Quorum Witness Node), and a standalone cloud `Backup Server`.
 
 ### 📊 Comprehensive Sizing, Platform, & Database Matrix
 
@@ -45,13 +66,6 @@ By shifting the underlying runtime environment from Windows Server Datacenter to
 | **Backup Server** <br>*(Cloud Storage)* | 2 vCPU / 8 GB RAM <br>500 GB Storage | `$124.28`<br>*(Yearly: $1,491.36)* | `$67.16`<br>*(Yearly: $805.92)* | **`$0.00`** | 🟢 **`$0.00`** <br>*(No SQL Engine Active)* | 🟢 **`$0.00`** <br>*(No SQL Engine Active)* | 🟢 **`$0.00`** <br>*(No SQL Engine Active)* |
 | **📈 TOTALS** | **18 vCPU / 136 GB RAM** <br>**2,128 GB Disk Pool** | **`$1,159.40 / mo`**<br>*(Yearly: $13,912.80)* | **`$671.60 / mo`**<br>*(Yearly: $8,059.20)* | **`$0.00 / mo`** | **Year 1:** `$60,492.00` <br>**Year 2+:** `$15,123.00/yr` | **`$2,190.00 / mo`** <br>*(Yearly: $26,280.00)* | **`$21,736.00 / yr`** <br>*(Yearly Engine Run)* |
 
-### 🟢 Net Architectural Savings (Linux Migration Dividend)
-
-Regardless of the database licensing route selected by procurement, deploying this platform on Linux cuts all underlying server host operating costs to zero, yielding the following results:
-
-*   **Operating System Cost on Windows:** **`$671.60 / month`** (`$8,059.20 / year`) forced across cluster runtimes.
-*   **Operating System Cost on Linux:** **`$0.00 / month`** (`$0.00 / year`) via headless open-source distribution builds.
-*   **The Bottom Line:** Migrating your high-availability ring to Linux keeps the performance profile identical while reclaiming **exactly $8,059.20 annually per cluster tier** by completely eliminating the Windows Server Operating System licensing layer and its corresponding memory tax.
 
 ---
 
