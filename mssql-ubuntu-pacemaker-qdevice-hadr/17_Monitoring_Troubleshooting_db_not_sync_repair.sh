@@ -12,7 +12,7 @@ AG_NAME="ptag"
 SERVERS=("DB1" "DB2" "DR-DB1")
 
 declare -A SERVER_IPS
-SERVER_IPS=( ["DB1"]="192.168.1.1" ["DB2"]="192.168.1.2" ["DR-DB1"]="10.0.1.1" )
+SERVER_IPS=( ["DB1"]="192.168.1.1" ["DB2"]="192.168.1.2" ["DR-DB1"]="172.30.1.1" )
 
 export PATH=$PATH:/opt/mssql-tools18/bin
 
