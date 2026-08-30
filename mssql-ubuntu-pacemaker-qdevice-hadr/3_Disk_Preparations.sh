@@ -10,9 +10,9 @@ sudo pvcreate /dev/sdb /dev/sdc
 sudo vgcreate vg_mssql /dev/sdb /dev/sdc
 
 echo "--> Partitioning isolated high-speed execution volumes..."
-sudo lvcreate -L 50G -n lv_data vg_mssql
-sudo lvcreate -L 30G -n lv_log vg_mssql
-sudo lvcreate -L 20G -n lv_tempdb vg_mssql
+sudo lvcreate -L 80G -n lv_data vg_mssql
+sudo lvcreate -L 50G -n lv_log vg_mssql
+sudo lvcreate -L 50G -n lv_tempdb vg_mssql
 
 echo "--> Forcing non-lazy file system catalog formatting blocks..."
 sudo mkfs.xfs -K /dev/vg_mssql/lv_data
