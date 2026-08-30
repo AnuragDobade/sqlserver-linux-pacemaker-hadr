@@ -95,7 +95,7 @@ Constructed dynamically using draw.io vectors, this model layout represents the 
 Execute files matching `1_Prerequisites.txt` parameters across all endpoints (`DB1`, `DB2`, `DR-DB1`). This synchronizes system locale tables, provisions network times protocols logs configurations via `chrony`, and writes local environment text lines references.
 
 ### Step 2: Networking & Security Firewall Maps
-Run commands inside `2_Firewall_Setup.txt` on all cluster members nodes to map exact perimeter boundary conditions. This restricts incoming system queries explicitly to trusted multi-subnet structures while opening internal endpoints ports such as Port 5022 (HADR), Port 2224 (PCSD), and Port 5403 (QDevice Voter).
+Run commands inside `2_Firewall_Setup.txt` on all cluster members nodes to map exact perimeter boundary conditions. This restricts incoming system queries explicitly to trusted multi-subnet structures while opening internal endpoints ports such as Port 5022 (HADR), Port 2224 (PCSD), and Port 5403 (QDevice Voter).<img width="400" height="310" alt="image" src="https://github.com/user-attachments/assets/0798cb81-2b9e-4fe2-8172-d7a60eb270fa" />
 
 ### Step 3: Logical Volume Storage Segmentation
 Invoke the automated mounting block script `3_Disk_Preparations.sh`. This constructs high-speed LVM block groups partitioned with non-lazy allocation mappings across XFS layouts, separating `DATA`, `LOG`, and `TEMPDB` physical storage tracks.
