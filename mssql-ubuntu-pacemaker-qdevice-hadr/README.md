@@ -1,7 +1,7 @@
 
 # Multi-Site SQL Server Always On Availability Group with Ubuntu Pacemaker & QDevice Quorum
 🚀 **Enterprise Infrastructure Runbook for Cross-Subnet HA/DR Orchestration & Automated Failover Testing**
-![Multi-Site Orchestrated Ubuntu Pacemaker QDevice Topology](./assets/architecture_multisite_ubuntu.png)
+![Multi-Site Orchestrated Ubuntu Pacemaker QDevice Topology](./assets/mssql-ubuntu-pacemaker-qdevice-hadr_architecture.png)
 ## 🧪 Test Cases Matrix & Core System Observations
 
 The following matrices document our comprehensive high-availability and disaster recovery validation testing across both architectural baselines (Without QDevice vs. With QDevice).
