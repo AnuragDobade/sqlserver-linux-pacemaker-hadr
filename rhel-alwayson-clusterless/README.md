@@ -363,7 +363,7 @@ BACKUP LOG EnterpriseAppDB  TO DISK = '/var/opt/mssql/backup/EnterpriseAppDB .tr
 GO
 
 -- Append database container directly into synchronization streams
-ALTER AVAILABILITY GROUP [ptag] ADD DATABASE [EnterpriseAppDB ];
+ALTER AVAILABILITY GROUP [ptag] ADD DATABASE [EnterpriseAppDB];
 GO
 ```
 

@@ -218,7 +218,7 @@ GO
 ### Phase 3: Resume Database Replication Tasks & Re-align Log Tracks
 Bring the database back online to resume standard application processing workloads:
 ```sql
-ALTER DATABASE [EnterpriseAppDB ] SET HADR RESUME;
+ALTER DATABASE [EnterpriseAppDB] SET HADR RESUME;
 GO
 ```
 <img width="749" height="351" alt="image" src="https://github.com/user-attachments/assets/39dfb0b9-0206-41fa-b6fa-ec257b0ffd3c" />

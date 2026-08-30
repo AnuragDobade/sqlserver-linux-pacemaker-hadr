@@ -12,12 +12,12 @@ ALTER DATABASE EnterpriseAppDB  SET RECOVERY FULL; -- Critical transaction trail
 GO
 
 -- Prepare complete initial full and differential log recovery file loops
-BACKUP DATABASE EnterpriseAppDB  TO DISK = '/var/opt/mssql/backup/dr_db.bak' WITH COMPRESSION, STATS = 30;
-BACKUP LOG EnterpriseAppDB  TO DISK = '/var/opt/mssql/backup/dr_db.trn' WITH COMPRESSION, STATS = 30;
+BACKUP DATABASE EnterpriseAppDB  TO DISK = '/var/opt/mssql/backup/EnterpriseAppDB.bak' WITH COMPRESSION, STATS = 30;
+BACKUP LOG EnterpriseAppDB  TO DISK = '/var/opt/mssql/backup/EnterpriseAppDB.trn' WITH COMPRESSION, STATS = 30;
 GO
 
 -- Inject workspace parameters into active replication queues
-ALTER AVAILABILITY GROUP [ptag] ADD DATABASE [EnterpriseAppDB ];
+ALTER AVAILABILITY GROUP [ptag] ADD DATABASE [EnterpriseAppDB];
 GO
 
 -- ========================================================================

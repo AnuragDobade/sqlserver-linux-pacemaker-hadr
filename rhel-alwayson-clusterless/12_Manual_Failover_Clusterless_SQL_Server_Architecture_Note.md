@@ -41,8 +41,8 @@ sleep 30
 echo "[4/5]: Demoting legacy Primary Node ($primarydbserver) to official SECONDARY role status..."
 sqlcmd -S "$primarydbserver" -U "$dbusername" -P "$dbpassword" -C -Q "ALTER AVAILABILITY GROUP [ptag] SET (ROLE = SECONDARY);"
 
-echo "[5/5]: Re-establishing data replication stream pipeline. Resuming HADR on database [EnterpriseAppDB ]..."
-sqlcmd -S "$primarydbserver" -U "$dbusername" -P "$dbpassword" -C -Q "ALTER DATABASE [EnterpriseAppDB ] SET HADR RESUME;"
+echo "[5/5]: Re-establishing data replication stream pipeline. Resuming HADR on database [EnterpriseAppDB]..."
+sqlcmd -S "$primarydbserver" -U "$dbusername" -P "$dbpassword" -C -Q "ALTER DATABASE [EnterpriseAppDB] SET HADR RESUME;"
 
 echo "------------------------------------------------------------"
 echo "✅ SUCCESS: Availability Group [ptag] Failover Process Complete!"
