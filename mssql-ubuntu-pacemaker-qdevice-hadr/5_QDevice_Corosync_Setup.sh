@@ -6,7 +6,7 @@
 set -e
 
 CLUSTER_NAME="sqlcluster"
-HACLUSTER_PASS="HClusC0mpleXpa"
+HACLUSTER_PASS="HaClusC0mpleXpa"
 QDEV_IP="10.10.10.178"
 
 echo "--> Authenticating secure cross-node handshake layers..."
