@@ -1,6 +1,6 @@
 -- ========================================================================
 -- RUNBOOK STEP 8: SECURE CRYPTOGRAPHIC KEYS & CERTIFICATES (SECONDARY NODE)
--- Execute within terminal connection frameworks on Node 2 (rh-staging2)
+-- Execute within terminal connection frameworks on Node 2 (rhel-node2)
 -- ========================================================================
 
 USE master;

@@ -11,8 +11,8 @@ echo "=== Configuring /etc/hosts entries ==="
 sudo tee /etc/hosts <<EOF
 127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1 localhost localhost.localdomain localhost6 localhost6.localdomain6
-rh-staging 192.168.20.11
-rh-staging2 192.168.20.12
+rhel-node1 192.168.20.11
+rhel-node2 192.168.20.12
 EOF
 
 echo "=== Configuring firewalld persistent rule matrices ==="
@@ -30,8 +30,8 @@ sudo dnf install -y telnet
 echo "=== Executing Network Ping Reachability Tests ==="
 ping -c 3 192.168.20.11
 ping -c 3 192.168.20.12
-ping -c 3 rh-staging
-ping -c 3 rh-staging2
+ping -c 3 rhel-node1
+ping -c 3 rhel-node2
 
 echo "========================================================================"
 echo "MANUAL VERIFICATION ACTIONS REQUIRED (Cross-Node Telnet Loops):"

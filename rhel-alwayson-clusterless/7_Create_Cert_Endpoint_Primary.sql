@@ -1,6 +1,6 @@
 -- ========================================================================
 -- RUNBOOK STEP 7: SECURE CRYPTOGRAPHIC KEYS & CERTIFICATES (PRIMARY NODE)
--- Execute within terminal connection frameworks on Node 1 (rh-staging1)
+-- Execute within terminal connection frameworks on Node 1 (rhel-node1)
 -- ========================================================================
 
 USE master;

@@ -12,8 +12,8 @@ This cluster topography enforces `CLUSTER_TYPE = NONE` to optimize database work
 
 | Hostname | IP Address | Role | SQL Server Edition | OS Version |
 | :--- | :--- | :--- | :--- | :--- |
-| **rh-staging1** | 192.168.20.11 | Primary Node | Enterprise Developer 2025 | RHEL 9.8 |
-| **rh-staging2** | 192.168.20.12 | Secondary Node | Enterprise Developer 2025 | RHEL 9.8 |
+| **rhel-node1** | 192.168.20.11 | Primary Node | Enterprise Developer 2025 | RHEL 9.8 |
+| **rhel-node2** | 192.168.20.12 | Secondary Node | Enterprise Developer 2025 | RHEL 9.8 |
 
 ![Read-Scale Availability Group Architecture Topology](./assets/architecture_overview.png)
 
@@ -24,10 +24,10 @@ Hardware specifications and system metrics extracted from active lab environment
 
 | Server Name | OS Version | CPU Cores | Memory RAM | Total Storage |
 | :--- | :--- | :--- | :--- | :--- |
-| **rh-staging1** | Red Hat Enterprise Linux 9.8 | 4 Cores | 15 GiB | 88.4 GB |
-| **rh-staging2** | Red Hat Enterprise Linux 9.8 | 2 Cores | 7.4 GiB | 67.4 GB |
+| **rhel-node1** | Red Hat Enterprise Linux 9.8 | 4 Cores | 15 GiB | 88.4 GB |
+| **rhel-node2** | Red Hat Enterprise Linux 9.8 | 2 Cores | 7.4 GiB | 67.4 GB |
 
-### 🖥️ PRIMARY NODE: rh-staging1 (192.168.20.11) Resource Profile
+### 🖥️ PRIMARY NODE: rhel-node1 (192.168.20.11) Resource Profile
 * **[💾 Compute Resources]**
   - CPU Allocation: 4 Cores (x86_64)
   - Memory Footprint: Total: 15 GiB | Used: 1.8 GiB | Free: 7.0 GiB (Available: 13 GiB)
@@ -38,7 +38,7 @@ Hardware specifications and system metrics extracted from active lab environment
   - `/usr` (/usr/bin): Size: 15G | Used: 4.7G | Avail: 11G | Use%: 32%
   - `/home`: Size: 11G | Used: 114M | Avail: 11G | Use%: 2%
 
-### 🖥️ SECONDARY NODE: rh-staging2 (192.168.20.12) Resource Profile
+### 🖥️ SECONDARY NODE: rhel-node2 (192.168.20.12) Resource Profile
 * **[💾 Compute Resources]**
   - CPU Allocation: 2 Cores (Intel Xeon Platinum 8370C @ 2.80GHz)
   - Memory Footprint: Total: 7.4 GiB | Used: 1.4 GiB | Free: 4.0 GiB (Available: 6.1 GiB)
@@ -57,10 +57,10 @@ Hardware specifications and system metrics extracted from active lab environment
 Execute on your respective server nodes to lock down host identifiers:
 ```bash
 # On Node 1
-sudo hostnamectl set-hostname rh-staging1
+sudo hostnamectl set-hostname rhel-node1
 
 # On Node 2
-sudo hostnamectl set-hostname rh-staging2
+sudo hostnamectl set-hostname rhel-node2
 ```
 
 ### Step 2.2: Apply Local Network Mapping
@@ -70,8 +70,8 @@ sudo vi /etc/hosts
 ```
 Add the static routing entries:
 ```text
-192.168.20.11   rh-staging1
-192.168.20.12   rh-staging2
+192.168.20.11   rhel-node1
+192.168.20.12   rhel-node2
 ```
 
 ### Step 2.3: Port Routing & Firewall Policy
@@ -99,11 +99,11 @@ Execute cross-node link validation checks to prove route integrity:
 ping -c 3 192.168.20.11
 ping -c 3 192.168.20.12
 
-# 2. Port Validation (Run from rh-staging2 to rh-staging1)
+# 2. Port Validation (Run from rhel-node2 to rhel-node1)
 telnet 192.168.20.11 1433
 telnet 192.168.20.11 5022  
 
-# 3. Port Validation (Run from rh-staging1 to rh-staging2)
+# 3. Port Validation (Run from rhel-node1 to rhel-node2)
 telnet 192.168.20.12 1433
 telnet 192.168.20.12 5022  
 ```
@@ -237,7 +237,7 @@ cat /var/opt/mssql/mssql.conf
 ![HADR configuration file parameters validation checks](./assets/hadr_extension_confirm.png)
 
 ### Step 5.2: Initialize Availability Group Definitions
-Connect to the **Primary Server (rh-staging1)** via `sqlcmd` to generate structural database cryptographic master keys, certificates, and transport loops:
+Connect to the **Primary Server (rhel-node1)** via `sqlcmd` to generate structural database cryptographic master keys, certificates, and transport loops:
 ```sql
 -- Establish cryptographic storage keys
 USE master;
@@ -276,11 +276,11 @@ GO
 ```
 
 ### Step 5.4: Cross-Ship Public Security Keys
-Transfer your authentication signatures over network boundaries via `scp` from `rh-staging1` to `rh-staging2`:
+Transfer your authentication signatures over network boundaries via `scp` from `rhel-node1` to `rhel-node2`:
 ```bash
 sudo scp /var/opt/mssql/backup/agcerts/AG_Transport_Cert.* root@192.168.20.12:/var/opt/mssql/backup/agcerts/
 ```
-Once moved, jump to the **Secondary Server (rh-staging2)** to realign discretionary access authority permissions:
+Once moved, jump to the **Secondary Server (rhel-node2)** to realign discretionary access authority permissions:
 ```bash
 sudo chown -R mssql:mssql /var/opt/mssql/backup/agcerts/
 sudo chmod 600 /var/opt/mssql/backup/agcerts/AG_Transport_Cert.*
@@ -288,7 +288,7 @@ sudo chmod 600 /var/opt/mssql/backup/agcerts/AG_Transport_Cert.*
 ![Terminal logs tracking security key transfers via scp](./assets/cross_node_key_shipping.png)
 
 ### Step 5.5: Secondary Configuration
-Connect to the **Secondary Server (rh-staging2)** to import primary security maps and initialize the mirrored database endpoint structure:
+Connect to the **Secondary Server (rhel-node2)** to import primary security maps and initialize the mirrored database endpoint structure:
 ```sql
 USE master;
 GO
@@ -316,19 +316,19 @@ GO
 ```
 
 ### Step 5.6: Initialize the Clusterless Availability Group Object
-Connect to the **Primary Server (rh-staging1)** to create the read-scale logical AG:
+Connect to the **Primary Server (rhel-node1)** to create the read-scale logical AG:
 ```sql
 CREATE AVAILABILITY GROUP [ptag]
 WITH (CLUSTER_TYPE = NONE) -- Enforcing clusterless read-scale parameters
 FOR REPLICA ON
-    N'rh-staging1' WITH (
+    N'rhel-node1' WITH (
         ENDPOINT_URL = N'TCP://192.168.20.11:5022',
         AVAILABILITY_MODE = SYNCHRONOUS_COMMIT, -- Guaranteed zero data loss configuration
         FAILOVER_MODE = MANUAL,
         SEEDING_MODE = AUTOMATIC,
         SECONDARY_ROLE(ALLOW_CONNECTIONS = ALL)
     ),
-    N'rh-staging2' WITH (
+    N'rhel-node2' WITH (
         ENDPOINT_URL = N'TCP://192.168.20.12:5022',
         AVAILABILITY_MODE = SYNCHRONOUS_COMMIT,
         FAILOVER_MODE = MANUAL,
@@ -339,7 +339,7 @@ GO
 ```
 
 ### Step 5.7: Connect the Secondary Replica to the Pipeline
-Connect to the **Secondary Server (rh-staging2)** and join the running session pipeline:
+Connect to the **Secondary Server (rhel-node2)** and join the running session pipeline:
 ```sql
 ALTER AVAILABILITY GROUP [ptag] JOIN WITH (CLUSTER_TYPE = NONE);
 GO
@@ -350,7 +350,7 @@ GO
 ```
 
 ### Step 5.8: Add the Database to the Availability Group
-On the **Primary Server (rh-staging1)**, create user workloads, switch recovery models, establish transactional tracking baselines, and inject the container into the synchronization pipeline:
+On the **Primary Server (rhel-node1)**, create user workloads, switch recovery models, establish transactional tracking baselines, and inject the container into the synchronization pipeline:
 ```sql
 CREATE DATABASE EnterpriseAppDB ;
 GO

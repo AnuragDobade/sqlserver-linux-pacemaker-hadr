@@ -9,13 +9,13 @@ GO
 CREATE AVAILABILITY GROUP [ptag]
 WITH (CLUSTER_TYPE = NONE) -- Creating Clusterless Session Profiles Natively
 FOR REPLICA ON
-N'rh-staging1' WITH (
+N'rhel-node1' WITH (
     ENDPOINT_URL = N'tcp://192.168.20.11:5022',
     AVAILABILITY_MODE = SYNCHRONOUS_COMMIT, -- Near zero-data loss recovery constraints
     FAILOVER_MODE = Manual,
     SEEDING_MODE = Automatic
 ),
-N'rh-staging2' WITH (
+N'rhel-node2' WITH (
     ENDPOINT_URL = N'tcp://192.168.20.12:5022',
     AVAILABILITY_MODE = SYNCHRONOUS_COMMIT,
     FAILOVER_MODE = Manual,
