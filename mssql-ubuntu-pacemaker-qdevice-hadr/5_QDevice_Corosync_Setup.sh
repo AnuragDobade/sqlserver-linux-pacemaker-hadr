@@ -7,13 +7,13 @@ set -e
 
 CLUSTER_NAME="sqlcluster"
 HACLUSTER_PASS="HaClusC0mpleXpa"
-QDEV_IP="10.10.10.178"
+QDEV_IP="20.20.20.178"
 
 echo "--> Authenticating secure cross-node handshake layers..."
 sudo pcs host auth DB1 DB2 DR-DB1 "$QDEV_IP" -u hacluster -p "$HACLUSTER_PASS"
 
 echo "--> Generating Corosync dual-ring routing mapping files..."
-sudo pcs cluster setup "$CLUSTER_NAME" DB1 addr=172.20.1.194 DB2 addr=172.20.1.239 DR-DB1 addr=172.30.1.99 --force
+sudo pcs cluster setup "$CLUSTER_NAME" DB1 addr=192.168.1.1 DB2 addr=192.168.1.2 DR-DB1 addr=10.0.1.1 --force
 
 echo "--> Igniting cluster automation engine states..."
 sudo pcs cluster enable --all

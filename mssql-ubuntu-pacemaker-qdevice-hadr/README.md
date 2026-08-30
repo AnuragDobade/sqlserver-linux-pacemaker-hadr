@@ -48,10 +48,10 @@ This repository delivers an end-to-end production deployment guide and automated
 | Hostname | IP Address | Subnet | Cluster Role / Commit Mode | OS & SQL Version |
 | :--- | :--- | :--- | :--- | :--- |
 | **DB1** | `172.20.1.144` | Subnet 1 (`172.20.1.0/24`) | Primary Replica / Synchronous Commit | Ubuntu 22.04 / SQL 2022/2025 |
-| **DB2** | `172.20.1.239` | Subnet 1 (`172.20.1.0/24`) | Secondary Replica / Synchronous Commit | Ubuntu 22.04 / SQL 2022/2025 |
-| **DR-DB1** | `172.30.1.99` | Subnet 2 (`172.30.1.0/24`) | DR Replica / Asynchronous Commit | Ubuntu 22.04 / SQL 2022/2025 |
-| **QDEVICE-SERVER** | `10.10.10.178` | Subnet 3 (`10.10.10.0/24`) | Corosync QNetd Daemon / Dynamic Vote Provider | Ubuntu 22.04 (No SQL Server) |
-| **DBCluster** | `172.20.1.62` | Subnet 1 (`172.20.1.0/24`) | Core Pacemaker Orchestrator Layer Virtual VIP | Cluster Daemon Layer |
+| **DB2** | `192.168.1.2` | Subnet 1 (`172.20.1.0/24`) | Secondary Replica / Synchronous Commit | Ubuntu 22.04 / SQL 2022/2025 |
+| **DR-DB1** | `10.0.1.1` | Subnet 2 (`172.30.1.0/24`) | DR Replica / Asynchronous Commit | Ubuntu 22.04 / SQL 2022/2025 |
+| **QDEVICE-SERVER** | `20.20.20.178` | Subnet 3 (`10.10.10.0/24`) | Corosync QNetd Daemon / Dynamic Vote Provider | Ubuntu 22.04 (No SQL Server) |
+| **DBCluster** | `192.168.1.3` | Subnet 1 (`172.20.1.0/24`) | Core Pacemaker Orchestrator Layer Virtual VIP | Cluster Daemon Layer |
 
 
 
@@ -69,20 +69,20 @@ Constructed dynamically using draw.io vectors, this model layout represents the 
        ┌──────────────────────────────────────────────────┐             ┌──────────────────────────────────────────────────┐
        │   ┌──────────────────┐    ┌──────────────────┐   │             │   ┌──────────────────┐                           │
        │   │   Node Name: DB1 │    │   Node Name: DB2 │   │             │   │ Node Name: DR-DB1│                           │
-       │   │   172.20.1.194   │◄──►│   172.20.1.239   │   │             │   │   172.30.1.99    │                           │
+       │   │   192.168.1.1   │◄──►│   192.168.1.2   │   │             │   │   10.0.1.1    │                           │
        │   └────────┬─────────┘    └────────┬─────────┘   │   WAN LINK  │   └────────┬─────────┘                           │
        │            │                       │             │ (Port 5403) │            │                                     │
        │  Stream ───┴───────────┬───────────┴──────────── ┼─────────────┼────────────┴─────────────                        │
        │                        │                         │             │                          │                       │
        │              Virtual Floating VIP:               │             │                Virtual Floating VIP:             │
-       │           Listenerdc (`172.20.1.30`)             │             │             Listenerdr (`172.30.1.10`)           │
+       │           Listenerdc (`192.168.1.20`)             │             │             Listenerdr (`10.0.1.10`)           │
        └────────────────────────┬─────────────────────────┘             └──────────────────────────┬───────────────────────┘
                                 │                                                                  │
                                 └─────────────────────────────────┬────────────────────────────────┘
                                                                   │
                                                       ┌───────────┴───────────┐
                                                       │  External Net Voter  │
-                                                      │ QDevice: 10.10.10.178 │
+                                                      │ QDevice: 20.20.20.178 │
                                                       │ (Subnet 3 LMS Server) │
                                                       └───────────────────────┘
 ```
