@@ -352,18 +352,18 @@ GO
 ### Step 5.8: Add the Database to the Availability Group
 On the **Primary Server (rh-staging1)**, create user workloads, switch recovery models, establish transactional tracking baselines, and inject the container into the synchronization pipeline:
 ```sql
-CREATE DATABASE PayLab;
+CREATE DATABASE EnterpriseAppDB ;
 GO
-ALTER DATABASE PayLab SET RECOVERY FULL; -- Always On Logging Mandate
+ALTER DATABASE EnterpriseAppDB  SET RECOVERY FULL; -- Always On Logging Mandate
 GO
 
 -- Take initial recovery log chain snapshots
-BACKUP DATABASE PayLab TO DISK = '/var/opt/mssql/backup/PayLab.bak' WITH COMPRESSION, STATS = 30;
-BACKUP LOG PayLab TO DISK = '/var/opt/mssql/backup/PayLab.trn' WITH COMPRESSION, STATS = 30;
+BACKUP DATABASE EnterpriseAppDB  TO DISK = '/var/opt/mssql/backup/EnterpriseAppDB .bak' WITH COMPRESSION, STATS = 30;
+BACKUP LOG EnterpriseAppDB  TO DISK = '/var/opt/mssql/backup/EnterpriseAppDB .trn' WITH COMPRESSION, STATS = 30;
 GO
 
 -- Append database container directly into synchronization streams
-ALTER AVAILABILITY GROUP [ptag] ADD DATABASE [PayLab];
+ALTER AVAILABILITY GROUP [ptag] ADD DATABASE [EnterpriseAppDB ];
 GO
 ```
 

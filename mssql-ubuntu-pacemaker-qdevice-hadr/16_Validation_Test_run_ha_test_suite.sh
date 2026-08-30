@@ -22,7 +22,7 @@ log_info() { echo -e "${YELLOW}[INFO]${RESET} $1"; }
 
 SQL_PASS="Sai5bv3sa"
 AG_NAME="ptag"
-DB_NAME="paylab"
+DB_NAME="EnterpriseAppDB "
 SQLCMD="/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P $SQL_PASS -C"
 
 export PATH=$PATH:/usr/sbin:/usr/bin:/sbin:/bin

@@ -6,18 +6,18 @@
 USE master;
 GO
 
-CREATE DATABASE PayLab;
+CREATE DATABASE EnterpriseAppDB ;
 GO
-ALTER DATABASE PayLab SET RECOVERY FULL; -- Critical transaction trail requirement
+ALTER DATABASE EnterpriseAppDB  SET RECOVERY FULL; -- Critical transaction trail requirement
 GO
 
 -- Prepare complete initial full and differential log recovery file loops
-BACKUP DATABASE PayLab TO DISK = '/var/opt/mssql/backup/dr_db.bak' WITH COMPRESSION, STATS = 30;
-BACKUP LOG PayLab TO DISK = '/var/opt/mssql/backup/dr_db.trn' WITH COMPRESSION, STATS = 30;
+BACKUP DATABASE EnterpriseAppDB  TO DISK = '/var/opt/mssql/backup/dr_db.bak' WITH COMPRESSION, STATS = 30;
+BACKUP LOG EnterpriseAppDB  TO DISK = '/var/opt/mssql/backup/dr_db.trn' WITH COMPRESSION, STATS = 30;
 GO
 
 -- Inject workspace parameters into active replication queues
-ALTER AVAILABILITY GROUP [ptag] ADD DATABASE [PayLab];
+ALTER AVAILABILITY GROUP [ptag] ADD DATABASE [EnterpriseAppDB ];
 GO
 
 -- ========================================================================

@@ -6,8 +6,8 @@
 set -e
 
 SQL_PASS="Sai5bv3sa"
-USER_PASS="Paylab@12345"
-DB_NAME="paylab"
+USER_PASS="EnterpriseAppDB @12345"
+DB_NAME="EnterpriseAppDB "
 AG_NAME="ptag"
 SERVERS=("DB1" "DB2" "DR-DB1")
 
