@@ -45,14 +45,19 @@ This repository delivers an end-to-end production deployment guide and automated
 * **Split-Brain Mitigation:** An external **Corosync QDevice Server** deployed in a neutral network segment (Subnet 3) providing an independent, dynamic tie-breaker quorum vote (`FFSPLIT: split brain and autofailover` architecture).
 * **Multi-Subnet Network Balancing:** Virtual IP mapping and independent local load balancer listeners floating across subnet environments to sustain active primary application endpoints.
 
+### 🎛️ Clustered Infrastructure Network & Sizing Matrix
+
+The high-availability environment maps across three logically isolated subnets using generic, sanitized documentation network coordinates:
+
 | Hostname | IP Address | Subnet | Cluster Role / Commit Mode | OS & SQL Version |
 | :--- | :--- | :--- | :--- | :--- |
-| **DB1** | `172.20.1.144` | Subnet 1 (`172.20.1.0/24`) | Primary Replica / Synchronous Commit | Ubuntu 22.04 / SQL 2022/2025 |
-| **DB2** | `192.168.1.2` | Subnet 1 (`172.20.1.0/24`) | Secondary Replica / Synchronous Commit | Ubuntu 22.04 / SQL 2022/2025 |
+| **DB1** | `192.168.1.1` | Subnet 1 (`192.168.1.0/24`) | Primary Replica / Synchronous Commit | Ubuntu 22.04 / SQL 2022/2025 |
+| **DB2** | `192.168.1.2` | Subnet 1 (`192.168.1.0/24`) | Secondary Replica / Synchronous Commit | Ubuntu 22.04 / SQL 2022/2025 |
 | **DR-DB1** | `172.30.1.1` | Subnet 2 (`172.30.1.0/24`) | DR Replica / Asynchronous Commit | Ubuntu 22.04 / SQL 2022/2025 |
-| **QDEVICE-SERVER** | `20.20.20.178` | Subnet 3 (`10.10.10.0/24`) | Corosync QNetd Daemon / Dynamic Vote Provider | Ubuntu 22.04 (No SQL Server) |
-| **DBCluster** | `192.168.1.3` | Subnet 1 (`172.20.1.0/24`) | Core Pacemaker Orchestrator Layer Virtual VIP | Cluster Daemon Layer |
-
+| **QDEVICE-SERVER** | `20.20.20.178` | Subnet 3 (`20.20.20.0/24`) | Corosync QNetd Daemon / Dynamic Vote Provider | Ubuntu 22.04 (No SQL Server) |
+| **DBCluster** | `192.168.1.3` | Subnet 1 (`192.168.1.0/24`) | Core Pacemaker Orchestrator Layer | Corosync / Pacemaker Daemon Layer |
+| *VIP: Listenerdc* | `192.168.1.20` | Subnet 1 (`192.168.1.0/24`) | Floating Local DC Virtual IP Listener | Load Balancer Traffic Endpoint |
+| *VIP: Listenerdr* | `172.30.1.10` | Subnet 2 (`172.30.1.0/24`) | Floating Disaster Recovery VIP Listener | Load Balancer Traffic Endpoint |
 
 
 ---
@@ -62,20 +67,18 @@ This repository delivers an end-to-end production deployment guide and automated
 This repository contains production-grade infrastructure blueprints, deployment configurations, and automated validation frameworks used to engineer an enterprise multi-subnet high-availability and disaster recovery layout for **Microsoft SQL Server 2022 Enterprise** deployed across Ubuntu 22.04 LTS environments.
 
 ## 🗺️ Architectural Topology Map
-Constructed dynamically using draw.io vectors, this model layout represents the structural system isolation boundaries across subnets:
 
-```text
-       [ MAIN DATACENTER (DC SITE Subnet 1: 172.20.1.0/24) ]            [ DISASTER RECOVERY (DR SITE Subnet 2: 172.30.1.0/24) ]
+       [ MAIN DATACENTER (DC SITE Subnet 1: 192.168.1.0/24) ]           [ DISASTER RECOVERY (DR SITE Subnet 2: 172.30.1.0/24) ]
        ┌──────────────────────────────────────────────────┐             ┌──────────────────────────────────────────────────┐
        │   ┌──────────────────┐    ┌──────────────────┐   │             │   ┌──────────────────┐                           │
        │   │   Node Name: DB1 │    │   Node Name: DB2 │   │             │   │ Node Name: DR-DB1│                           │
-       │   │   192.168.1.1   │◄──►│   192.168.1.2   │   │             │   │   172.30.1.1    │                           │
+       │   │   192.168.1.1    │◄──►│   192.168.1.2    │   │             │   │   172.30.1.1     │                           │
        │   └────────┬─────────┘    └────────┬─────────┘   │   WAN LINK  │   └────────┬─────────┘                           │
        │            │                       │             │ (Port 5403) │            │                                     │
        │  Stream ───┴───────────┬───────────┴──────────── ┼─────────────┼────────────┴─────────────                        │
        │                        │                         │             │                          │                       │
        │              Virtual Floating VIP:               │             │                Virtual Floating VIP:             │
-       │           Listenerdc (`192.168.1.20`)             │             │             Listenerdr (`172.30.1.10`)           │
+       │           Listenerdc (`192.168.1.20`)            │             │             Listenerdr (`172.30.1.10`)           │
        └────────────────────────┬─────────────────────────┘             └──────────────────────────┬───────────────────────┘
                                 │                                                                  │
                                 └─────────────────────────────────┬────────────────────────────────┘
@@ -85,7 +88,7 @@ Constructed dynamically using draw.io vectors, this model layout represents the 
                                                       │ QDevice: 20.20.20.178 │
                                                       │ (Subnet 3 LMS Server) │
                                                       └───────────────────────┘
-```
+
 
 ---
 
