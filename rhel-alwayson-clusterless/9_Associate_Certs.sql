@@ -2,7 +2,7 @@
 -- RUNBOOK STEP 9: CONNECT CROSS-NODE CREDENTIAL REPLICATION HANDSHAKES
 -- ========================================================================
 
--- SECTION A: RUN THIS BLOCK ON THE PRIMARY NODE (rh-staging1 / 10.1.0.5)
+-- SECTION A: RUN THIS BLOCK ON THE PRIMARY NODE (rh-staging1 / 192.168.20.11)
 USE [MASTER];
 GO
 CREATE LOGIN aglogin WITH PASSWORD = 'C!axPa$$lp';
@@ -16,7 +16,7 @@ GRANT CONNECT ON ENDPOINT::mssqldbep TO [aglogin];
 GO
 
 
--- SECTION B: RUN THIS BLOCK ON THE SECONDARY NODE (rh-staging2 / 10.1.0.6)
+-- SECTION B: RUN THIS BLOCK ON THE SECONDARY NODE (rh-staging2 / 192.168.20.12)
 /*
 USE [MASTER];
 GO

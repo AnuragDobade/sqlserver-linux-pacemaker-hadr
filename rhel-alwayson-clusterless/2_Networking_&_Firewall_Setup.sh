@@ -11,8 +11,8 @@ echo "=== Configuring /etc/hosts entries ==="
 sudo tee /etc/hosts <<EOF
 127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1 localhost localhost.localdomain localhost6 localhost6.localdomain6
-rh-staging 10.1.0.5
-rh-staging2 10.1.0.6
+rh-staging 192.168.20.11
+rh-staging2 192.168.20.12
 EOF
 
 echo "=== Configuring firewalld persistent rule matrices ==="
@@ -28,21 +28,21 @@ echo "=== Installing validation connection engines ==="
 sudo dnf install -y telnet
 
 echo "=== Executing Network Ping Reachability Tests ==="
-ping -c 3 10.1.0.5
-ping -c 3 10.1.0.6
+ping -c 3 192.168.20.11
+ping -c 3 192.168.20.12
 ping -c 3 rh-staging
 ping -c 3 rh-staging2
 
 echo "========================================================================"
 echo "MANUAL VERIFICATION ACTIONS REQUIRED (Cross-Node Telnet Loops):"
 echo "From Node 2, run these commands to verify Node 1 is listening:"
-echo "  telnet 10.1.0.5 2224"
-echo "  telnet 10.1.0.5 3121"
-echo "  telnet 10.1.0.5 21064"
-echo "  telnet 10.1.0.5 1433"
-echo "  telnet 10.1.0.5 5022"
+echo "  telnet 192.168.20.11 2224"
+echo "  telnet 192.168.20.11 3121"
+echo "  telnet 192.168.20.11 21064"
+echo "  telnet 192.168.20.11 1433"
+echo "  telnet 192.168.20.11 5022"
 echo ""
 echo "Verify UDP cluster hearbeat port connectivity using netcat:"
-echo "  nc -zvu 10.1.0.5 5405"
-echo "  nc -zvu 10.1.0.6 5405"
+echo "  nc -zvu 192.168.20.11 5405"
+echo "  nc -zvu 192.168.20.12 5405"
 echo "========================================================================"

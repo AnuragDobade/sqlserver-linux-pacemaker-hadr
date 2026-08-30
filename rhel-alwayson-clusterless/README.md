@@ -12,8 +12,8 @@ This cluster topography enforces `CLUSTER_TYPE = NONE` to optimize database work
 
 | Hostname | IP Address | Role | SQL Server Edition | OS Version |
 | :--- | :--- | :--- | :--- | :--- |
-| **rh-staging1** | 10.1.0.5 | Primary Node | Enterprise Developer 2025 | RHEL 9.8 |
-| **rh-staging2** | 10.1.0.6 | Secondary Node | Enterprise Developer 2025 | RHEL 9.8 |
+| **rh-staging1** | 192.168.20.11 | Primary Node | Enterprise Developer 2025 | RHEL 9.8 |
+| **rh-staging2** | 192.168.20.12 | Secondary Node | Enterprise Developer 2025 | RHEL 9.8 |
 
 ![Read-Scale Availability Group Architecture Topology](./assets/architecture_overview.png)
 
@@ -27,7 +27,7 @@ Hardware specifications and system metrics extracted from active lab environment
 | **rh-staging1** | Red Hat Enterprise Linux 9.8 | 4 Cores | 15 GiB | 88.4 GB |
 | **rh-staging2** | Red Hat Enterprise Linux 9.8 | 2 Cores | 7.4 GiB | 67.4 GB |
 
-### 🖥️ PRIMARY NODE: rh-staging1 (10.1.0.5) Resource Profile
+### 🖥️ PRIMARY NODE: rh-staging1 (192.168.20.11) Resource Profile
 * **[💾 Compute Resources]**
   - CPU Allocation: 4 Cores (x86_64)
   - Memory Footprint: Total: 15 GiB | Used: 1.8 GiB | Free: 7.0 GiB (Available: 13 GiB)
@@ -38,7 +38,7 @@ Hardware specifications and system metrics extracted from active lab environment
   - `/usr` (/usr/bin): Size: 15G | Used: 4.7G | Avail: 11G | Use%: 32%
   - `/home`: Size: 11G | Used: 114M | Avail: 11G | Use%: 2%
 
-### 🖥️ SECONDARY NODE: rh-staging2 (10.1.0.6) Resource Profile
+### 🖥️ SECONDARY NODE: rh-staging2 (192.168.20.12) Resource Profile
 * **[💾 Compute Resources]**
   - CPU Allocation: 2 Cores (Intel Xeon Platinum 8370C @ 2.80GHz)
   - Memory Footprint: Total: 7.4 GiB | Used: 1.4 GiB | Free: 4.0 GiB (Available: 6.1 GiB)
@@ -70,8 +70,8 @@ sudo vi /etc/hosts
 ```
 Add the static routing entries:
 ```text
-10.1.0.5   rh-staging1
-10.1.0.6   rh-staging2
+192.168.20.11   rh-staging1
+192.168.20.12   rh-staging2
 ```
 
 ### Step 2.3: Port Routing & Firewall Policy
@@ -96,16 +96,16 @@ sudo dnf install -y telnet nc
 Execute cross-node link validation checks to prove route integrity:
 ```bash
 # 1. ICMP Ping Test (Run from either node to test line quality)
-ping -c 3 10.1.0.5
-ping -c 3 10.1.0.6
+ping -c 3 192.168.20.11
+ping -c 3 192.168.20.12
 
 # 2. Port Validation (Run from rh-staging2 to rh-staging1)
-telnet 10.1.0.5 1433
-telnet 10.1.0.5 5022  
+telnet 192.168.20.11 1433
+telnet 192.168.20.11 5022  
 
 # 3. Port Validation (Run from rh-staging1 to rh-staging2)
-telnet 10.1.0.6 1433
-telnet 10.1.0.6 5022  
+telnet 192.168.20.12 1433
+telnet 192.168.20.12 5022  
 ```
 
 ---
@@ -278,7 +278,7 @@ GO
 ### Step 5.4: Cross-Ship Public Security Keys
 Transfer your authentication signatures over network boundaries via `scp` from `rh-staging1` to `rh-staging2`:
 ```bash
-sudo scp /var/opt/mssql/backup/agcerts/AG_Transport_Cert.* root@10.1.0.6:/var/opt/mssql/backup/agcerts/
+sudo scp /var/opt/mssql/backup/agcerts/AG_Transport_Cert.* root@192.168.20.12:/var/opt/mssql/backup/agcerts/
 ```
 Once moved, jump to the **Secondary Server (rh-staging2)** to realign discretionary access authority permissions:
 ```bash
@@ -322,14 +322,14 @@ CREATE AVAILABILITY GROUP [ptag]
 WITH (CLUSTER_TYPE = NONE) -- Enforcing clusterless read-scale parameters
 FOR REPLICA ON
     N'rh-staging1' WITH (
-        ENDPOINT_URL = N'TCP://10.1.0.5:5022',
+        ENDPOINT_URL = N'TCP://192.168.20.11:5022',
         AVAILABILITY_MODE = SYNCHRONOUS_COMMIT, -- Guaranteed zero data loss configuration
         FAILOVER_MODE = MANUAL,
         SEEDING_MODE = AUTOMATIC,
         SECONDARY_ROLE(ALLOW_CONNECTIONS = ALL)
     ),
     N'rh-staging2' WITH (
-        ENDPOINT_URL = N'TCP://10.1.0.6:5022',
+        ENDPOINT_URL = N'TCP://192.168.20.12:5022',
         AVAILABILITY_MODE = SYNCHRONOUS_COMMIT,
         FAILOVER_MODE = MANUAL,
         SEEDING_MODE = AUTOMATIC,

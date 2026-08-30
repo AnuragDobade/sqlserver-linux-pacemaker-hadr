@@ -14,8 +14,8 @@ cat /etc/redhat-release
 
 Infrastructure Node Pool Matrix:
 ------------------------------------------------------------------------
-- Node 1 Name: rh-staging  | IP Allocation: 10.1.0.5
-- Node 2 Name: rh-staging2 | IP Allocation: 10.1.0.6
+- Node 1 Name: rhel-node1  | IP Allocation: 192.168.20.11
+- Node 2 Name: rhel-node2  | IP Allocation: 192.168.20.12
 
 Deployment Requirements:
 - Full root or administrative sudo execution privileges across all endpoints.
