@@ -111,9 +111,7 @@ Deploy the high-availability resource fencing management layer across cluster ta
 Execute the centralized orchestration block script `5_QDevice_Corosync_Setup.sh` exclusively from the primary configuration panel server (`DB1`). This authenticates deployment environments coordinates, disables global STONITH requirements for standard virtualization configurations staging, and binds the external Net QDevice witness tracking loops using the Linear Minimum Split (LMS) vote algorithm over Port 5403.
 * **🖼️ Visual Validation Checkpoint:** Ensure the cluster architecture displays proper token passing parameters.
   
-<img width="1175" height="584" alt="image" src="https://github.com/user-attachments/assets/ba6ef920-5c2d-4540-b0c6-63ce6c1d7bb1" />
-
-
+![Multi-Site Corosync](./assets/corosync_status.png)
 ### Step 6: Installation of SQL Server 2022 Instance Engine
 Deploy the base Microsoft product database engine binaries across instances environments components maps using instructions captured inside `6_Installation_SQL_Server.txt`.
 
@@ -138,18 +136,21 @@ Initialize the base high-availability cluster container components layers variab
 ### Step 13: Enrolling Production Target Database Structures
 Execute configuration queries files mapped inside `13_Add_DB_to_AG.sql` inside the active master primary database context server to link target application operational storage schemas to automatic tracking seeding loops pipelines.
 * **🖼️ Visual Validation Checkpoint:** SSMS console status displays healthy status logs parameters.
-  <img width="1250" height="625" alt="image" src="https://github.com/user-attachments/assets/010a19ef-45fa-47a2-be1d-aab1f178c65b" />
-
-<img width="1573" height="761" alt="image" src="https://github.com/user-attachments/assets/a3109560-4a70-43d9-ae4f-80661b83203a" />
-
+ 
+![Multi-Site DRDB](./assets/dr-db_ag.png)
+![Multi-Site AG_Sync](./assets/ag-sync.png)
+![Multi-Site AG_Status](./assets/ag-status.png)
 
 ### Step 14: Mounting Multi-Subnet Virtual Listeners IPs
 Map out system network connection interfaces addresses coordinates tokens by executing queries documented inside `14_Create_Listener.sql` files specifications structures.
-<img width="428" height="242" alt="image" src="https://github.com/user-attachments/assets/c95ea983-169b-4f73-99b4-e507ab2655ef" />
-<img width="1272" height="609" alt="image" src="https://github.com/user-attachments/assets/ac4d966e-0c98-41ac-8fc9-38aa9ea79f03" />
+
+![Multi-Site AG_listener](./assets/listener_ag.png)
+![Multi-Site Cluster_Status](./assets/cluster-check.png)
+
 
 ### Step 15: Provisions Read-Only Routing Traffic Distribution Priority Chains
 Deploy advanced reporting scale-out optimization properties lists maps across instances environments layout tables using queries packaged inside `15_Create_Routing_Lists.sql`.
+![Multi-Site routing_Status](./assets/routing.png)
 
 
 ## 🧪 Advanced Stress Test Cases Matrix & Core System Observations
@@ -169,7 +170,8 @@ To evaluate the capabilities of this high-availability clustering and database e
 * **Observations & Operational Verdict:** **AUTOMATED CROSS-SUBNET FAILOVER IS BLOCKED.** Pacemaker attempts to promote the disaster recovery replica node (`DR-DB1`), but the SQL Server resource agent blocks the action to prevent split-brain scenarios and data corruption. The environment locks down, requiring an administrative manual override.
 * **🖼️ Visual Evidence Log:** The cluster console logs failures and the SSMS manager tracks the environment as locked.
   
-<img width="1471" height="585" alt="image" src="https://github.com/user-attachments/assets/40a76744-e699-4f31-8fd3-ab0554de8be0" />
+
+![Multi-Site Cluster_restriction_block_cluster](./assets/restriction_block_cluster.png)
 
 ### Test Case 3: Complete Cluster Network Isolation Scenario (Total WAN Link Cutout)
 * **Failure Trigger Method:** Sever network communication links connecting the primary data center from the QDevice server and the DR site simultaneously.
@@ -184,12 +186,10 @@ To evaluate the capabilities of this high-availability clustering and database e
 * **Observations & Operational Verdict:** **SUCCESSFUL LOCAL FAILOVER.** Node `DB2` assumes the Primary Master role cleanly. Floating virtual IP coordinates map onto the newly promoted host, allowing client processing systems to reconnect seamlessly.
 * **🖼️ Visual Evidence Log:** The status terminal confirms that `DB2` is active and the virtual IP resource has migrated.
   
-<img width="1328" height="746" alt="image" src="https://github.com/user-attachments/assets/2ecb5e42-656c-41aa-9ac4-3cc2cba51cfd" />
 
-<img width="1252" height="355" alt="image" src="https://github.com/user-attachments/assets/c2b5cb26-96df-4628-8f52-24abe86a8bb9" />
 
-<img width="659" height="359" alt="image" src="https://github.com/user-attachments/assets/f0466ac9-60af-4afb-b66a-e60d3f1a7fb7" />
-
+![Multi-Site promote-db2_cluster](./assets/promote-db2.png)
+![Multi-Site promoted-db2_cluster](./assets/promoted-db2.png)
 
 
 
@@ -214,10 +214,8 @@ GO
 ```
 * **🖼️ Visual Evidence Log:** The query analyzer execution log confirms successful command execution.
   
-<img width="658" height="356" alt="image" src="https://github.com/user-attachments/assets/5abac4ab-faf2-4ee5-8b8a-49596847fff1" />
-<img width="643" height="349" alt="image" src="https://github.com/user-attachments/assets/e8b8a54d-8c8b-44c3-9ee7-fe90f73e6ef6" />
-
-
+![Multi-Site promote-dr-db1_cluster](./assets/promote-dr-db1.png)
+![Multi-Site promoted-dr-db1_cluster](./assets/promoted-dr-db1.png)
 
 ### Phase 3: Resume Database Replication Tasks & Re-align Log Tracks
 Bring the database back online to resume standard application processing workloads:
@@ -225,9 +223,6 @@ Bring the database back online to resume standard application processing workloa
 ALTER DATABASE [EnterpriseAppDB] SET HADR RESUME;
 GO
 ```
-<img width="749" height="351" alt="image" src="https://github.com/user-attachments/assets/39dfb0b9-0206-41fa-b6fa-ec257b0ffd3c" />
-
-
 
 ### Phase 4: Validate Post-Disaster Baseline Stability Metrics
 Verify that the cluster manager has successfully stabilized and that the multi-subnet listener routing constraints have updated:
@@ -237,5 +232,7 @@ sudo pcs status
 ```
 * **🖼️ Visual Evidence Log:** The final system summary status reports that `DR-DB1` is serving application workloads as the new primary master.
   
-<img width="1411" height="734" alt="image" src="https://github.com/user-attachments/assets/3f60df81-d684-4758-99ae-30a412584967" />
+  ag_sync_status.png
+  ![Multi-Site ag_sync_status](./assets/ag_sync_status.png)
+
 
